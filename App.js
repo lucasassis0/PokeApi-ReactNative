@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableHighlight, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, TouchableHighlight, TextInput, Alert, Image } from 'react-native';
 import axios from 'axios'
 
 class App extends React.Component{
@@ -51,6 +51,11 @@ class App extends React.Component{
     render(){
         return (
             <SafeAreaView style={styles.safe}>
+                <View style={styles.logoView}>
+                    <Image source={require('./src/img/poke.png')} 
+                        style={styles.logo}
+                    />
+                </View>
                 <View style={styles.container}>
                     <TextInput
                         style={styles.textInput}
@@ -83,6 +88,15 @@ const styles = StyleSheet.create({
     safe: {
         flex: 1,
         backgroundColor: 'red'
+    },
+    logoView: {
+        alignContent: "center",
+        alignItems: "center"
+    },
+    logo: {
+        marginTop: 20,
+        width: 100,
+        height: 50
     },
     container: {
         margin: 30,
