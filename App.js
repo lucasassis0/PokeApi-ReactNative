@@ -8,7 +8,9 @@ class App extends React.Component{
         this.state = {
             pokemons: [],
             txtInput: '',
-            isEmpty: true
+            isEmpty: true,
+            spritesURL: [],
+            sprites: []
         }
     }
 
@@ -18,6 +20,7 @@ class App extends React.Component{
                 //console.log(res.data)
                 res.data.pokemon.map( poke => {
                     this.state.pokemons.push(poke.pokemon.name.toUpperCase())
+                    this.state.spritesURL.push(poke.pokemon.url)
                 })
                 
                 if (this.state.pokemons == []) {
@@ -25,11 +28,24 @@ class App extends React.Component{
                 }else{
                     this.setState({isEmpty: false})
                 }
+                this.getSprite()
             })
 
             .catch(err => {
                 Alert.alert('Erro: '+err);
             })
+    }
+
+    getSprite = () => {
+        this.state.spritesURL.map(url => {
+            axios.get(url)
+                .then(res => {
+                    this.state.sprites.push(res.sprites)
+                })
+                .catch(err => {
+                    Alert.alert('Erro: '+err)
+                })
+        })
     }
     
     render(){
@@ -50,9 +66,13 @@ class App extends React.Component{
                     </TouchableHighlight>
                 </View>
                 <ScrollView style={styles.sv}>
-                    <Text style={styles.textSV}>
-                        {!this.state.isEmpty && this.state.pokemons.sort().join('\n')}
-                    </Text>
+                    {this.state.pokemons.map((pokemon) => {
+                        return(
+                            <Text style={styles.textSV}>
+                                {pokemon}
+                            </Text>
+                        )})
+                    }
                 </ScrollView>
             </SafeAreaView>
         )
@@ -86,6 +106,9 @@ const styles = StyleSheet.create({
         marginBottom: 50,
     },
     textSV: {
+        margin: 5,
+        borderWidth: 2,
+        borderColor: 'black',
         color: 'yellow',
         textAlign: 'center',
         fontSize: 18
